@@ -1,6 +1,7 @@
 <html lang="fr">
 
 <head>
+  <link href="data:image/x-icon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADv0VCb79FQm+/RUJvv0VCb79FQm+/RUJvv0VCb79FQm+/RUJv36KhZAAAAAAAAAAAAAAAAAAAAAO/RUMfv0VD/79FQ/+/RUP/v0VD/79FQ/+/RUP/v0VD/79FQ/+/RUP/v0VD/79FQ/+/RUP8AAAAAAAAAAAAAAADv0VD/79FQ/+/RUP/v0VD/79FQ/+/RUP/v0VD/79FQ/+/RUP/v0VD/79FQ/+/RUP/v0VD/79FQ/wAAAAAAAAAA79FQ/+/RUP/v0VD/79FQ/+/RUP/v0VD/79FQ/+/RUP/v0VD/79FQ/+/RUP/v0VD/79FQ/+/RUP8AAAAAAAAAAAAAAADv0VD/79FQ/+/RUP/v0VD/79FQ/+/RUP/v0VD/79FQ/+/RUP/v0VD/79FQ/+/RUP/v0VD/AAAAAAAAAAAAAAAAAAAAAO/RULzv0VD/79FQ/+/RUP/v0VD/79FQ/+/RUP/v0VD/79FQ/+/RUP/v0VD/AAAAAAAAAACA9v8vAAAAAAAAAAD36Kgx79FQ/+/RUP/v0VD/79FQ/+/RUP/v0VD/Au3+9ADt//8A7f//AO3//wAAAACA9v9VAAAAAAAAAAAAAAAAAAAAAO/RUP/v0VD/79FQ/+/RUP/v0VD/79FQ/wDt//8A7f//AO3//wDt//8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA79FQ/+/RUP/v0VD/79FQ/wDt//8A7f//AO3//wDt//8A7f//AAAAAADt//+A9v8UAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADt/xIA7f//AO3//wDt//8A7f//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADt/04AAAAAAAAAAADt//IA7f/cAAAAAAAAAAAA7f8bAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADt/4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAID2/xEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA7f//AAAAAAAAAAAA7f//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAO3/XAAAAAAAAAAAgPb/YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8AAMAfAAAABwAAAAMAAAADAACAAwAAwAcAAOAHAADgBwAA8AUAAP8PAAD/nwAA+/8AAP9vAAD//wAA//8AAA==" rel="icon" type="image/x-icon" />
 	<meta charset="utf-8">
 	<title>Projet Kuujjuaq</title>
 	<meta name="description" content="Kuujjuaq Project">
@@ -21,13 +22,18 @@
 				</div>
 			</header>
 		</div>
+		<a href="guide.html">
+			<button id="hide-to-print">Guide(?)</button>
+		</a>
 		<div class="row loading">
 			<div class="loadingio-spinner-eclipse-1hsk38mlyew">
 				<div class="ldio-7btvc4ldabm">
+					
 					<div></div>
 				</div>
 			</div>
 		</div>
+		<p id="loading-progress"></p>
 		<div class="row graph-and-table">
 			<div class="reps0 col-sm-12">
 				<div id="reps0">
@@ -68,7 +74,7 @@
 				<textarea rows="10" , cols="50"></textarea>
 			</div>
 		</div>
-		<div class="row footer">
+		<div id="hide-for-print" class="row footer">
 			<div class="col-sm-offset-0 col-sm-3">
 				<div class="class-sm-offset-1 col-sm-10">
 					<p></p>
@@ -78,10 +84,7 @@
 				</div>
 				<footer class="mastfoot mt-auto">
 					<div class="inner">
-						<p>Version 2.0</p>
-						<a href="guide.html">
-							<button>Aide(?)</button>
-						</a>
+						<p>Version 2.1.4</p>
 					</div>
 				</footer>
 			</div>

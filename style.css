@@ -188,4 +188,8 @@
  h2 {
    text-align: center;
  }
- 
+ @media print {
+  #hide-to-print {
+    display: none;
+  }
+}

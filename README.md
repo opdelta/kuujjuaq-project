@@ -41,7 +41,7 @@ Le temps d'attente dépend de plusieurs facteurs dont:
 - Etc.
 
 Une fois le chargement de la page terminé, la page ressemblera à ceci:
-![Previsions Kuujjuaq](https://i.imgur.com/BTRWC5k.png)
+![Previsions Kuujjuaq](https://i.imgur.com/IjvAPQF.png)
 ** L'exemple ci-dessus n'est pas représentatif des vraies prévisions à la date indiquée. 
 
 La page web est séparée en 3 grandes sections.
@@ -56,9 +56,9 @@ Le graphique de probabilités de précipitations démontre visuellement les prob
 
 Une fonctionnalité intéressante de ce graphique est son interactivité. Il est possible à l'aide la souris, de regarder la probabilité de précipitation à un instant précis en passant la souris par dessus un point. 
 Il est également possible de zoomer et dézoomer le graphique en maintenant le clic gauche et en dessinant un carré autour des valeurs voulues.
-![Zoom](https://i.imgur.com/VVfP0yZ.png)
+![Zoom](https://i.imgur.com/bu1U4ui.png)
 D'autres manipulations du graphiques sont également disponible en passant la souris dans le coin supérieur droit du graphique.
-![Options](https://i.imgur.com/isnJXZK.png)
+![Options](https://i.imgur.com/oHNPNT2.png)
 
 ### Tableau de probabilités
 La deuxième section de la page web, le tableau de probabilités contient les données suivantes de manière textuelle.
@@ -69,7 +69,7 @@ La deuxième section de la page web, le tableau de probabilités contient les do
 - Probabilités de précipitations de `5.0mm` et plus.
 - Température locale.
 - Vitesse du vent
-- Direction du vent (`N`, `NNE`, `NE`, `ENE`, `E`, `ESE`, `SE`, `SSE`, `S`, `SSW`, `SW`, `WSW`, `W`, `WNW`, `NW`, `NNW`).
+- Direction du vent (`N`, `NE`,  `E`, `SE`, `S`, `SW`, `W`, `NW`).
 #### Note importante
 Les dates affichées dans la tableau sont de format ISO8601 (AAAA-MM-JJ) ajustées à l'heure locale.
 Les valeurs affichées ne sont pas "instantanées". Voici un exemple:
@@ -92,11 +92,11 @@ Le deuxième champ texte `Prévisions officielles` permet au météorologue d'é
 
 Il est possible d'enregistrer la page sous format PDF pour des fins de partage. 
 Pour ce faire, il suffit d'appuyer sur `Ctrl + P`. Un dialogue d'impression apparaîtra comme cela:
-![Impression](https://i.imgur.com/YTtZQ3H.png)
+![Impression](https://i.imgur.com/a0mz84f.png)
 En sélectionnant l'option `Microsoft Print to PDF` ou `Enregistrer en tant que PDF`, la page au complet sera enregistrée en tant que PDF avec les commentaires et peut par la suite être consulté et envoyé facilement. 
 
 Le graphique peut également être téléchargé en tant que `png` en sélectionnant l'icône de photo dans les options du graphique.
-![Télécharger en tant que PNG](https://i.imgur.com/FvAPwWf.png)
+![Télécharger en tant que PNG](https://i.imgur.com/urTDrJT.png)
 
 ## Informations techniques
 ### Couches utilisées
@@ -109,7 +109,8 @@ Le graphique peut également être téléchargé en tant que `png` en sélection
 - HRDPS.CONTINENTAL_WD (Direction du vent HRDPS)
 - HRDPS.CONTINENTAL_WSPD (Vitesse du vent HRDPS)
 
-Il est possible de changer les couches utilisées sur demande.
+Pour changer les couches utilisées, vous pouvez communiquer avec ziad.lteif@ec.gc.ca.
+
 ### Limitations 
 
 Les couches du `REPS` utilisent les passes suivantes: `00Z`, `06Z`, `12Z` et `18Z` (6h d'intervalle), tandis que les couches du `HRDPS` se mettent à jour à toutes les heures. De plus, les couches du `REPS` projettent jusqu'à 72h dans le futur contrairement au 48h limité par le `HRDPS`. 
@@ -124,23 +125,25 @@ Comme mentionné précédemment, l'affichage de la date suit la norme ISO8601 (A
 Lorsque la réponse de la requête de `HRDPS.CONTINENTAL_TT` revient, la valeur par défaut est un angle (360°). 
 La conversion de l'angle (°) en cardinal N, S, E, W se fait comme suit:
 ```javascript
-let  val = Number((num/22.5)+.5);
-let  arr= ["N","NNE","NE","ENE","E","ESE", "SE", "SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
-return  arr[Math.round((val % 16))];
+let  val = Number((num / 45));
+let  arr = ["N", "NE", "E", "SE", "S", "SO", "O", "NO"];
+if (Math.round((val % 8)) == 8) {
+	return  "Variables";
+}
+return  arr[Math.round((val % 8))];
 ```
 Un tableau contient toutes les possibilités cardinales et le modulo 16 de l'angle divisé par 22.5 + 0.5 (arrondi) retourne un indice de tableau contenant la cardinalité de la direction du vent. 
 Approximativement, la direction du vent varie tous les 22.5°.
-
-### Envoie des requêtes
-Les requêtes sont envoyés via l'API `fetch` de `Javascript` et les réponses de toutes les requêtes sont traitées à l'aide d'un `promise.all`. L'utilisation de l'API `fetch` et des `Promises` fait en sorte que la compatibilité avec certains fureteurs n'est pas supportée (Internet Explorer).
 
 ## Dépannage
 
 | Problème | Description du problème | Cause possible | Solution |
 |---|---|---|---|
-|#1| La page est blanche et rien ne s'affiche autre que les commentaires du météorologue et les prévisions officielles. (**Aucune animation de chargement**) | Javascript est désactivé ou un fureteur incompatible est utilisé | Assurez-vous d'avoir Javascript activé dans votre fureteur. Vous pouvez consulter https://www.enable-javascript.com/ pour les étapes à suivre pour votre fureteur. Assurez-vous d'utiliser un fureteur compatible avec l'application en vous référant à la section "Compatiblité". |
-|#2| La page charge indéfiniment (Plus de 2m30s) | Une erreur est survenue lors de la lecture de la réponse suite à une requête.  | Rafraîchissez la page. Si le chargement continue indéfiniment, ouvrez la console de votre fureteur (https://balsamiq.com/support/faqs/browserconsole/). Sur Google Chrome: `Ctrl + Shift + J`. Si une erreur de type `Uncaught (in promise) SyntaxError: Unexpected token < in JSON at position 0` est soulevée, attendez 3-5 minutes et réessayer. Si l'erreur persiste, essayez un autre fureteur. Dans l'eventualité où l'erreur persiste, assurez-vous que votre pare-feu ne bloque pas la requête vers `https://geo.weather.gc.ca`. Déconnectez-vous d'un VPN (s'il y a lieu) et rééssayer. Si la déconnexion du VPN est impossible, vider le cache dans votre fureteur (https://www.pcmag.com/how-to/how-to-clear-your-cache-on-any-browser), redémarrez votre ordinateur et rééssayer de nouveau.|
+|#1| La page est blanche et rien ne s'affiche autre que les commentaires du météorologue et les prévisions officielles. (**Aucune animation de chargement**) | Javascript est désactivé ou un fureteur incompatible est utilisé | Assurez-vous d'avoir Javascript activé dans votre fureteur. Vous pouvez consulter https://www.enable-javascript.com/ pour les étapes à suivre pour votre fureteur.<br /> Assurez-vous d'utiliser un fureteur compatible avec l'application en vous référant à la section "Compatiblité". |
+|#2| La page charge indéfiniment (Plus de 2m30s) | Une erreur est survenue lors de la lecture de la réponse suite à une requête.  | Rafraîchissez la page. Si le chargement continue indéfiniment, ouvrez la console de votre fureteur (https://balsamiq.com/support/faqs/browserconsole/). Sur Google Chrome: `Ctrl + Shift + J`. <br /><br /> Si une erreur de type `Uncaught (in promise) SyntaxError: Unexpected token < in JSON at position 0` est soulevée, attendez 3-5 minutes et réessayer. <br /><br /> Si l'erreur persiste, essayez un autre fureteur. Dans l'eventualité où l'erreur persiste, assurez-vous que votre pare-feu ne bloque pas la requête vers `https://geo.weather.gc.ca`. Déconnectez-vous d'un VPN (s'il y a lieu) et rééssayer. <br /> <br /> Si la déconnexion du VPN est impossible, vider le cache dans votre fureteur (https://www.pcmag.com/how-to/how-to-clear-your-cache-on-any-browser), redémarrez votre ordinateur et rééssayer de nouveau. <br /> <br />Si une erreur de type `JavaScript: Error undefined JavaScript execution exceeded timeout` apparaît dans la console, suivez les étapes ci-dessus pour assurer une connexion fiable vers `https://geo.weather.gc.ca`. <br />Si l'erreur persiste, attendez une vingtaine de minutes et réessayer. Il est possible que les serveurs `geo.weather.gc.ca` soient débordés. |
 |#3| Le tableau affiche des valeurs `%undefined%` ou `%NaN%`  | Un problème de connexion empêche l'envoi de toutes les requêtes adéquatement.  | Assurez-vous d'avoir une connexion Internet stable et que votre pare-feu ne bloque pas les requêtes vers `https://geo.weather.gc.ca`. Attendez quelques minutes et rafraîchissez la page. |
+|#4| La page ne s'affiche pas correction lors de l'impression en PDF.  | Un paramètre du fureteur peut obstruer l'affichage de la page correctement.  | Désactiver toutes les extensions du fureteur (Adblock, etc.), vérifiez que la version de votre navigateur est compatible avec l'application et essayer un autre navigateur. <br /><br />Si la page ne s'affiche toujours pas correctement lors de l'impression `Ctrl + P`, vous pouvez utiliser `Snipping tool` sur Windows afin de capturer l'écran. |
+
 
 ## Licence
 

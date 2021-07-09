@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-let [coordX, coordY] = [59.094, -68.421]; //CYVP airport 
+let [coordX, coordY] = [58.089, -68.428]; //CYVP airport 59.094 -68.421
 const layer02 = 'REPS.DIAG.6_PRMM.ERGE0.2'; //Regional precipitation >= 0.2mm
 const layer1 = 'REPS.DIAG.6_PRMM.ERGE1'; //Regional precipitation >= 1mm
 const layer25 = 'REPS.DIAG.6_PRMM.ERGE2.5'; //Regional precipitation >= 2.5mm
@@ -36,7 +36,7 @@ const nightlyCapab = 'https://geomet-dev-03-nightly.cmc.ec.gc.ca/geomet?service=
 let utc = -4; //Timezone
 let [version, request, info_format] = ['1.3.0', 'GetFeatureInfo', 'application/json']; //Version, request and format for the information
 let [minx, miny, maxx, maxy] = [coordX - 0.25, coordY - 0.25, coordX + 0.25, coordY + 0.25]; //bbox around CYVP airport
-
+let progress = 0;
 /**
  * Initializes an array containing all the required information to send the requests to Geomet.
  * Timesteps for the time= parameter is also considered and calculated.
@@ -103,14 +103,26 @@ async function sendRequests(headers, nb) {
     }
     //console.log(datesMod); Debugging
     for (let i = 0; i < datesMod.length; ++i) {
-      if (i != 0) {
-        url = url.replace(/[^=]*$/.exec(url), datesMod[i]);
+      try {
+        if (i != 0) {
+          url = url.replace(/[^=]*$/.exec(url), datesMod[i]);
+        }
+        //console.log(url);
+        let response = await fetch(url);
+        //console.log(response);
+        let data = await response.json();
+        responses.push(data.features[0].properties.value);
+        progress = progress + 1.53;
+        if (progress >= 100) {
+          progress = 100;
+        }
+        if (document.getElementById("loading-progress")) {
+          document.getElementById("loading-progress").innerHTML = Math.round(progress) + '%';
+        }
+      } catch (e) {
+        console.log("Time out of bounds detected. Skipping request(s)...");
       }
-      //console.log(url);
-      let response = await fetch(url);
-      //console.log(response);
-      let data = await response.json();
-      responses.push(data.features[0].properties.value);
+      
     }
   } else {
     for (let j = 0; j < headers[0].length; ++j) {
@@ -120,19 +132,30 @@ async function sendRequests(headers, nb) {
       let response = await fetch(url);
       let data = await response.json();
       responses.push(data.features[0].properties.value);
+      progress = progress + 1.53;
+      if (progress >= 100) {
+        progress = 100;
+      }
+      if (document.getElementById("loading-progress")) {
+        document.getElementById("loading-progress").innerHTML = Math.round(progress) + '%';
+      }
     }
   }
   return responses;
 }
 
 function degToCompass(num) {
-  let val = Number((num / 22.5) + .5);
-  //console.log(val);
-  let arr = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
-  return arr[Math.round((val % 16))];
+  let val = Number((num / 45));
+  let arr = ["N", "NE", "E", "SE", "S", "SO", "O", "NO"];
+  if (Math.round((val % 8)) == 8) {
+    return "Variables";
+  }
+  return arr[Math.round((val % 8))];
 }
 /**
- * 
+ * Function takes in dates array and data array and traces the plotly.js plot 
+ * for data visualisation. Dates are in ISO8601 format and trimmed to keep YYYY-MM-DD HH:MM.
+ * A date containing empty data is pushed at the end of the array to prevent graph from cutting off
  * 
  * @param {*} xaxis 
  * @param {*} yaxis 
@@ -143,12 +166,19 @@ function tracePlot(xaxis, yaxis) {
   let date = [];
   let tempRounded = [];
   let windKm = [];
+  let lastDate = new Date(xaxis[xaxis.length-1]);
+  lastDate.setHours(lastDate.getHours() + 6);
+  lastDate = lastDate.toLocaleString('fr-CA');
+  lastDate = lastDate.substring(0, lastDate.indexOf('m'));
+  lastDate = lastDate.replace(' h ', 'h');
+
   for (let i = 0; i < xaxis.length; ++i) {
     date[i] = xaxis[i].toLocaleString('fr-CA');
     date[i] = date[i].substring(0, date[i].indexOf('m'));
     date[i] = date[i].replace(' h ', 'h');
     //console.log(date[i]); Debugging
   }
+  date.push(lastDate);
   for (let j = 0; j < yaxis[4].length; ++j) {
     tempRounded[j] = Number(Math.round(yaxis[4][j]));
   }
@@ -156,6 +186,9 @@ function tracePlot(xaxis, yaxis) {
     if (!isNaN(Math.round(yaxis[6][k]))) {
       windKm[k] = Number(Math.round(yaxis[6][k] * 3.6));
     }
+  }
+  for (let l = 0; l < yaxis.length; ++l) {
+    yaxis[l].push(0);
   }
   var trace1 = {
     x: date,
@@ -165,7 +198,7 @@ function tracePlot(xaxis, yaxis) {
     line: {
       color: 'rgb(144, 224, 239)',
       width: 3,
-      shape: 'hvh'
+      shape: 'hv'
     },
     fill: 'tozeroy',
 
@@ -178,7 +211,7 @@ function tracePlot(xaxis, yaxis) {
     line: {
       color: 'rgb(72, 202, 228)',
       width: 3,
-      shape: 'hvh'
+      shape: 'hv'
     },
     fill: 'tozeroy',
 
@@ -191,7 +224,7 @@ function tracePlot(xaxis, yaxis) {
     line: {
       color: 'rgb(0, 150, 199)',
       width: 3,
-      shape: 'hvh'
+      shape: 'hv'
     },
     fill: 'tozeroy',
 
@@ -204,45 +237,11 @@ function tracePlot(xaxis, yaxis) {
     line: {
       color: 'rgb(2, 62, 138)',
       width: 3,
-      shape: 'hvh'
+      shape: 'hv'
     },
     fill: 'tozeroy',
 
   }
-  /*
-  var trace5 = {
-    x: date,
-    y: windKm,
-    type: 'scatter',
-    mode: 'markers',
-    name: 'Vitesse du vent (Km/h)',
-    marker: {
-      color: 'red',
-      line: {
-        color: 'red',
-        width: 1,
-      },
-      symbol: 'circle',
-      size: 6
-    }
-  }
-  var trace6 = {
-    x: date,
-    y: tempRounded,
-    type: 'scatter',
-    mode: 'markers',
-    name: 'Temperature (°C)',
-    marker: {
-      color: 'green',
-      line: {
-        color: 'green',
-        width: 1,
-      },
-      symbol: 'circle',
-      size: 6
-    }
-  }
-  */
   var layout = {
     title: 'Probabilités de précipitations',
     automargin: true,
@@ -270,14 +269,19 @@ var data = [trace1, trace2, trace3, trace4 /*trace5, trace6*/];
   Plotly.newPlot('reps0', data, layout);
 }
 /**
- * 
- * 
+ * Function takes in date and data arrays to populate the HTML table.
+ * A heatmap is attributed to the values in each probabilities cells.
  * @param {*} date 
  * @param {*} data 
  * @param {*} nb 
  */
 function createTable(date, data) {
-  //console.log(data);
+  for (let z = 0; z < data.length; ++z) {
+    data[z].pop();
+  }
+  console.log("Table date below.");
+  console.table(data);
+  console.table(date);
   let table = document.querySelector("#table-probs");
   let row;
   for (let k = 0; k < date.length; ++k) {
@@ -450,9 +454,7 @@ function createTable(date, data) {
   }
 }
 /**
- * 
- * 
- * 
+ * Function converts Zulu dates to ISO-8601 compliant dates that is then adjusted to the user's local time. 
  * @param {*} time 
  * @returns 
  */
@@ -466,48 +468,6 @@ function adjustUTC(time) {
   return adjustedDate;
 }
 
-/**
- * 
- * @param {*} str 
- * @returns 
- */
-/*
-function dateToFrench(str) {
-  let fr;
-  if (str.toString().includes("Mon")) {
-    fr = str.toString().replace("Mon", "Lun");
-  } else if (str.toString().includes("Tue")) {
-    fr = str.toString().replace("Tue", "Mar");
-  } else if (str.toString().includes("Wed")) {
-    fr = str.toString().replace("Wed", "Mer");
-  } else if (str.toString().includes("Thu")) {
-    fr = str.toString().replace("Thu", "Jeu");
-  } else if (str.toString().includes("Fri")) {
-    fr = str.toString().replace("Fri", "Ven");
-  } else if (str.toString().includes("Sat")) {
-    fr = str.toString().replace("Sat", "Sam");
-  } else {
-    fr = str.toString().replace("Sun", "Dim");
-  }
-
-  if (str.toString().includes("Feb")) {
-    fr = str.toString().replace("Feb", "fév");
-  } else if (str.toString().includes("Apr")) {
-    fr = str.toString().replace("Apr", "avr");
-  } else if (str.toString().includes("May")) {
-    fr = str.toString().replace("May", "mai");
-  } else if (str.toString().includes("Aug")) {
-    fr = str.toString().replace("Aug", "aoû");
-  } else if (str.toString().includes("Dec")) {
-    fr = str.toString().replace("Dec", "déc");
-  }
-  let day = fr.match(/\s\d\d\s/)[0];
-  let month = fr.match(/\s\D\D\D\s/)[0];
-  fr = fr.replace(fr.match(/\s\d\d\s/)[0], month);
-  fr = fr.replace(fr.match(/\s\D\D\D\s/)[0], day);
-  return fr;
-}
-*/
 /**
  * Parses Geomet service's GetCapabilities to retrieve time values.
  * Once time values are retrieved, requests are prepared and sent using
@@ -551,7 +511,7 @@ fetch(regularCapab + layer02)
     Promise.all(promises)
       .then((results) => {
         console.log("Results received successfully. Details below:");
-        console.log(results);
+        console.table(results);
         console.log("Tracing graph...");
         tracePlot(adjustedUTC, results);
         console.log("Graph traced.");
@@ -564,7 +524,12 @@ fetch(regularCapab + layer02)
         if (document.querySelector("body > div.container > div.row.loading")) {
           document.querySelector("body > div.container > div.row.loading").remove();
         }
+        if (document.querySelector("body > div > p")) {
+          document.querySelector("body > div > p").remove();
+        }
         console.log("Task done.");
-      });
+      }).catch(err => {
+        console.log(err);
+        console.error('Une erreur s\'est produite. Veuillez réessayer dans quelques minutes. Si l\'erreur persiste, veuillez contacter Ziad.lteif@ec.gc.ca')});
   })
- 
+

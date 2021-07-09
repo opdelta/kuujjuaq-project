@@ -1,296 +1,209 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Projet Kuujjuaq</title>
-	<link rel="stylesheet" href="https://stackedit.io/style.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guide de l&#x27;utilisateur</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
 </head>
 
 <body class="stackedit">
-	<div class="stackedit__left">
-		<div class="stackedit__toc">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#guide-de-lutilisateur">Guide de l’utilisateur</a>
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#lancement-de-lapplication">Lancement de l’application</a></li>
+<li><a href="#exportation">Exportation</a></li>
+<li><a href="#informations-techniques">Informations techniques</a></li>
+<li><a href="#dépannage">Dépannage</a></li>
+<li><a href="#licence">Licence</a></li>
+</ul>
+</li>
+</ul>
 
-			<ul>
-				<li><a href="#guide-de-lutilisateur">Guide de l’utilisateur</a>
-					<ul>
-						<li><a href="#introduction">Introduction</a></li>
-						<li><a href="#installation">Installation</a></li>
-						<li><a href="#lancement-de-lapplication">Lancement de l’application</a></li>
-						<li><a href="#exportation">Exportation</a></li>
-						<li><a href="#informations-techniques">Informations techniques</a></li>
-						<li><a href="#dépannage">Dépannage</a></li>
-						<li><a href="#licence">Licence</a></li>
-					</ul>
-				</li>
-			</ul>
-		</div>
-	</div>
-	<div class="stackedit__right">
-		<div class="stackedit__html">
-			<h1 id="guide-de-lutilisateur">Guide de l’utilisateur</h1>
-			<h2 id="introduction">Introduction</h2>
-			<p>Le projet Kuujjuaq est une application Web qui affiche à l’aéroport de Kuujjuaq, les prévisions de probabilités de précipitation provenant du 
-        Système régional de prévision d'ensemble à 15km de résolution selon différents seuils ainsi que les prévisions de la vitesse, 
-        la direction des vents et la température provenant du Système à haute résolution de prévision déterministe à 2.5km.<br>
-				L’application permet également au météorologue d’ajouter des commentaires et de fournir une prévision officielle.<br>
-				Le tout peut finalement être exporté en format <code>PDF</code> pour des fins de partage.<br> Pour plus d'informations, voici de la documentation pertinente.<br>
-        <a href="https://eccc-msc.github.io/open-data/msc-data/nwp_reps/readme_reps_fr/">Système régional de prévision d'ensemble</a><br>
-        <a href="https://eccc-msc.github.io/open-data/msc-data/nwp_hrdps/readme_hrdps_fr/">Système à haute résolution de prévision déterministe</a>
-      </p>
-			<h2 id="installation">Installation</h2>
-			<p>Afin de profiter d’une performance adéquate et optimale, voici les étapes à suivre.</p>
-			<h3 id="préconditions-a-namecompatibilitya">Préconditions <a></a></h3>
-			<p>Voici la compatibilité avec les différents fureteurs:<br>
-				<style>
-					.compat {
-						border: none;
-						border-collapse: collapse;
-						padding: 5px;
-					}
-
-					.compat th {
-						border: 1px solid #C0C0C0;
-						padding: 5px;
-						background: #F0F0F0;
-					}
-
-					.compat td {
-						border: 1px solid #C0C0C0;
-						padding: 5px;
-					}
-
-					.compat caption {
-						caption-side: bottom;
-						text-align: left;
-					}
-
-					.no-support {
-						background-color: #ffbdbd;
-						background-image: linear-gradient(to bottom right, rgba(94, 3, 6, .1) 0, rgba(94, 3, 6, .1) 1px, transparent 0, transparent 67px, rgba(94, 3, 6, .1) 0, rgba(94, 3, 6, .1) 73px, transparent 0, transparent 138px, rgba(94, 3, 6, .1) 0, rgba(94, 3, 6, .1) 144px, transparent 0), linear-gradient(to bottom left, rgba(94, 3, 6, .1) 0, rgba(94, 3, 6, .1) 1px, transparent 0, transparent 67px, rgba(94, 3, 6, .1) 0, rgba(94, 3, 6, .1) 73px, transparent 0, transparent 138px, rgba(94, 3, 6, .1) 0, rgba(94, 3, 6, .1) 144px, transparent 0);
-						background-position: 50% 50%, 50% 50%;
-						background-repeat: no-repeat;
-						background-size: 100px 100px, 100px 100px;
-						font-weight: 700;
-						text-align: center;
-					}
-
-					.unsure-support {
-						background-color: #ffd9bd;
-						background-image: linear-gradient(to bottom right, rgba(144, 99, 18, .2) 0, rgba(144, 99, 18, .2) 1px, transparent 0, transparent 67px, rgba(144, 99, 18, .2) 0, rgba(144, 99, 18, .2) 73px, transparent 0, transparent 138px, rgba(144, 99, 18, .2) 0, rgba(144, 99, 18, .2) 144px, transparent 0);
-						background-position: 50% 50%;
-						background-repeat: no-repeat;
-						background-size: 100px 100px;
-						text-align: center;
-					}
-
-					.supports {
-						text-align: center;
-						background-color: #ebf8e1;
-					}
-
-					.empty {
-						border: none !important;
-						border-collapse: collapse;
-					}
-
-				</style>
-			<table class="compat" id="compatibility">
-				<caption>*Les fureteurs partiellement compatibles peuvent fonctionner. Cependant, des problèmes imprévus peuvent survenir.</caption>
-				<thead>
-					<tr>
-						<th>Chrome</th>
-						<th>Firefox</th>
-						<th>Microsoft Edge</th>
-						<th>Internet Explorer</th>
-						<th>Opera</th>
-						<th>Safari</th>
-						<th>WebView&nbsp; Android</th>
-						<th>Chrome for Android</th>
-						<th>Samsung Internet</th>
-						<th>Firefox for Android</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td class="supports">76</td>
-						<td class="supports">79</td>
-						<td class="supports">85</td>
-						<td class="no-support">Incompatible</td>
-						<td class="no-support">Incompatible</td>
-						<td class="supports">12.1</td>
-						<td class="unsure-support">85</td>
-						<td class="supports">85</td>
-						<td class="unsure-support">12.0</td>
-						<td class="supports">79</td>
-					</tr>
-					<tr>
-						<td class="empty"></td>
-					</tr>
-					<tr>
-						<th>Légende</th>
-					</tr>
-					<tr>
-						<td class="supports">Compatibilité complète</td>
-						<td class="unsure-support">Compatibilité partielle</td>
-						<td class="no-support">Incompatible</td>
-					</tr>
-				</tbody>
-			</table>
-			<p>Le fichier <code>.7z</code> inclus dans le package contient les sous-fichiers suivants qui devront être exportés:</p>
-			<ul>
-				<li><code>index.html</code> - Page web principale.</li>
-				<li><code>main.js</code> - Code source de l’application web.</li>
-				<li><code>style.css</code> - Fichier de style pour l’affichage de la page web.</li>
-				<li><code>guide.html</code> - Ce document.</li>
-			</ul>
-			<h3 id="décompression-des-fichiers">Décompression des fichiers</h3>
-			<p>Pour décompresser les fichiers: <code>clic droit &gt; 7zip &gt; Extraire</code> ou ouvrir le fichier <code>.7z</code> et copier/coller les fichiers vers un répertoire.<br>
-				Veuillez prendre note que tous les fichiers doivent se situer dans le même répertoire sans quoi l’application ne pourra fonctionner.</p>
-			<h2 id="lancement-de-lapplication">Lancement de l’application</h2>
-			<p>En utilisant un fureteur compatible avec l’application web (Voir <a href="#compatibility">ici</a>), lancez le fichier <code>index.html</code>.</p>
-			<p>Lors du lancement initial de l’application, plusieurs requêtes seront faites à l'API <code>GeoMet du SMC</code> pour aller chercher les prévisions météorologiques de la dernière passe disponibles. Dès lors, le temps d’attente initial peut varier entre <code>5s et 75s</code>.<br>
-				Le temps d’attente dépend de plusieurs facteurs dont:</p>
-			<ul>
-				<li>La vitesse du réseau</li>
-				<li>La bande passante disponible</li>
-				<li>La charge de travail sur les serveurs de GeoMet du SMC</li>
-				<li>Le temps de la journée au moment de la requête</li>
-				<li>Etc.</li>
-			</ul>
-			<p>Une fois le chargement de la page terminé, la page ressemblera à ceci:<br>
-				<img src="https://i.imgur.com/BTRWC5k.png" alt="Previsions Kuujjuaq"><br>
-				** L’exemple ci-dessus n’est pas représentatif des vraies prévisions à la date indiquée.
-			</p>
-			<p>La page web est séparée en 3 grandes sections.</p>
-			<h3 id="graphique-de-probabilités-de-précipitations">Graphique de probabilités de précipitations</h3>
-			<p>Le graphique des prévisions de probabilités de précipitations démontre visuellement les probabilités de précipitations suivantes:</p>
-			<ul>
-				<li>Probabilités de précipitations de <code>0.2mm</code> et plus</li>
-				<li>Probabilités de précipitations de <code>1.0mm</code> et plus</li>
-				<li>Probabilités de précipitations de <code>2.5mm</code> et plus</li>
-				<li>Probabilités de précipitations de <code>5.0mm</code> et plus</li>
-			</ul>
-			<p>Une fonctionnalité intéressante de ce graphique est son interactivité. Il est possible à l’aide la souris, d'obtenir la probabilité de précipitation à un instant précis en passant la souris par dessus un point.<br>
-				Il est également possible de zoomer et dézoomer le graphique en maintenant le clic gauche et en dessinant un carré autour des valeurs voulues.<br>
-				<img src="https://i.imgur.com/VVfP0yZ.png" alt="Zoom"><br>
-				D’autres manipulations du graphiques sont également disponibles en passant la souris dans le coin supérieur droit du graphique.<br>
-				<img src="https://i.imgur.com/isnJXZK.png" alt="Options">
-			</p>
-			<h3 id="tableau-de-probabilités">Tableau de prévisions</h3>
-			<p>La deuxième section de la page web, le tableau de données contient les prévisions suivantes de manière textuelle.</p>
-			<ul>
-				<li>Probabilités de précipitations de <code>0.2mm</code> et plus</li>
-				<li>Probabilités de précipitations de <code>1.0mm</code> et plus</li>
-				<li>Probabilités de précipitations de <code>2.5mm</code> et plus</li>
-				<li>Probabilités de précipitations de <code>5.0mm</code> et plus./li>
-				<li>Température locale</li>
-				<li>Vitesse du vent</li>
-				<li>Direction du vent (<code>N</code>, <code>NNE</code>, <code>NE</code>, <code>ENE</code>, <code>E</code>, <code>ESE</code>, <code>SE</code>, <code>SSE</code>, <code>S</code>, <code>SSW</code>, <code>SW</code>, <code>WSW</code>, <code>W</code>, <code>WNW</code>, <code>NW</code>, <code>NNW</code>)</li>
-			</ul>
-			<h4 id="note-importante">Note importante</h4>
-			<p>Les dates affichées dans la tableau sont de format ISO8601 (AAAA-MM-JJ) ajustées à l’heure locale.<br>
-				Les valeurs affichées ne sont pas “instantanées”. Voici un exemple:</p>
-			<pre><code>2021-06-30 02h00 -
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="guide-de-lutilisateur">Guide de l’utilisateur</h1>
+<h2 id="introduction">Introduction</h2>
+<p>Le projet Kuujjuaq est une application Web qui affiche les probabilités d’averses selon différents seuils, la vitesse et la direction des vents ainsi que la température à l’aéroport de Kuujjuaq.<br>
+L’application permet également au météorologue d’ajouter des commentaires et de faire une prévision officielle.<br>
+Le tout peut finalement être exporté en format <code>PDF</code> pour des fins de partages.</p>
+<h2 id="installation">Installation</h2>
+<p>Afin de profiter d’une performance adéquate et optimale, voici les étapes à suivre.</p>
+<h3 id="préconditions-a-namecompatibilitya">Préconditions <a></a></h3>
+<p>Voici la compatibilité avec les différents fureteurs:<br>
+Table goes here</p>
+<p>Le fichier <code>.7z</code> fourni contient les sous-fichiers suivants qui devront être exportés:</p>
+<ul>
+<li><code>index.html</code> - Page web principale.</li>
+<li><code>main.js</code> - Code source de l’application web.</li>
+<li><code>style.css</code> - Fichier de style pour l’affichage de la page web.</li>
+<li><code>guide.html</code> - Ce document.</li>
+</ul>
+<h3 id="décompression-des-fichiers">Décompression des fichiers</h3>
+<p>Pour décompresser les fichiers: <code>clic droit &gt; 7zip &gt; Extraire</code> ou ouvrir le fichier <code>.7z</code> et copier/coller les fichiers vers un répertoire.<br>
+Veuillez prendre note que tous les fichiers doivent se situer dans le même répertoire sans quoi l’application ne pourra fonctionner.</p>
+<h2 id="lancement-de-lapplication">Lancement de l’application</h2>
+<p>En utilisant un fureteur compatible avec l’application web (Voir <a href="#compatibility">ici</a>), lancez le fichier <code>index.html</code>.</p>
+<p>Lors du lancement initial de l’application, plusieurs requêtes seront faites à <code>Geomet</code> pour aller chercher les dernières prévisions météorologiques. Dès lors, le temps d’attente initial peut varier entre <code>5s et 75s</code>.<br>
+Le temps d’attente dépend de plusieurs facteurs dont:</p>
+<ul>
+<li>La vitesse du réseau</li>
+<li>La bande passante disponible</li>
+<li>La charge de travail sur les serveurs de Geomet</li>
+<li>Le temps de la journée au moment de la requête</li>
+<li>Etc.</li>
+</ul>
+<p>Une fois le chargement de la page terminé, la page ressemblera à ceci:<br>
+<img src="https://i.imgur.com/IjvAPQF.png" alt="Previsions Kuujjuaq"><br>
+** L’exemple ci-dessus n’est pas représentatif des vraies prévisions à la date indiquée.</p>
+<p>La page web est séparée en 3 grandes sections.</p>
+<h3 id="graphique-de-probabilités-de-précipitations">Graphique de probabilités de précipitations</h3>
+<p>Le graphique de probabilités de précipitations démontre visuellement les probabilités de précipitations suivantes:</p>
+<ul>
+<li>Probabilités de précipitations de <code>0.2mm</code> et plus.</li>
+<li>Probabilités de précipitations de <code>1.0mm</code> et plus.</li>
+<li>Probabilités de précipitations de <code>2.5mm</code> et plus.</li>
+<li>Probabilités de précipitations de <code>5.0mm</code> et plus.</li>
+</ul>
+<p>Une fonctionnalité intéressante de ce graphique est son interactivité. Il est possible à l’aide la souris, de regarder la probabilité de précipitation à un instant précis en passant la souris par dessus un point.<br>
+Il est également possible de zoomer et dézoomer le graphique en maintenant le clic gauche et en dessinant un carré autour des valeurs voulues.<br>
+<img src="https://i.imgur.com/bu1U4ui.png" alt="Zoom"><br>
+D’autres manipulations du graphiques sont également disponible en passant la souris dans le coin supérieur droit du graphique.<br>
+<img src="https://i.imgur.com/oHNPNT2.png" alt="Options"></p>
+<h3 id="tableau-de-probabilités">Tableau de probabilités</h3>
+<p>La deuxième section de la page web, le tableau de probabilités contient les données suivantes de manière textuelle.</p>
+<ul>
+<li>Probabilités de précipitations de <code>0.2mm</code> et plus.</li>
+<li>Probabilités de précipitations de <code>1.0mm</code> et plus.</li>
+<li>Probabilités de précipitations de <code>2.5mm</code> et plus.</li>
+<li>Probabilités de précipitations de <code>5.0mm</code> et plus.</li>
+<li>Température locale.</li>
+<li>Vitesse du vent</li>
+<li>Direction du vent (<code>N</code>, <code>NE</code>,  <code>E</code>, <code>SE</code>, <code>S</code>, <code>SW</code>, <code>W</code>, <code>NW</code>).</li>
+</ul>
+<h4 id="note-importante">Note importante</h4>
+<p>Les dates affichées dans la tableau sont de format ISO8601 (AAAA-MM-JJ) ajustées à l’heure locale.<br>
+Les valeurs affichées ne sont pas “instantanées”. Voici un exemple:</p>
+<pre><code>2021-06-30 02h00 -
 2021-06-30 08h00 A
 2021-06-30 14h00 B
 2021-06-30 20h00 C
 </code></pre>
-			<p>La lecture des prévisions <code>B</code> à <code>14h00</code> représente les prévisions <code>B</code> entre <code>08h00</code> et <code>14h00</code>.<br>
-				La lecture des prévisions <code>C</code> à <code>20h00</code> représente les prévisions <code>C</code> entre <code>14h00</code> et <code>20h00</code>.<br>
-				La lecture des prévisions <code>A</code> à <code>08h00</code> représente les prévisions <code>A</code> entre <code>02h00</code> et <code>08h00</code>.<br>
-				*Heure locale.</p>
-			<h3 id="commentaires">Commentaires</h3>
-			<p>La dernière section contient deux champs textes qui peuvent être utilisés pour commenter les données brutes plus haut. La section <code>Commentaires du météorologue</code> permet au météorologue d’ajouter ses propres commentaires par rapport aux prévisions.<br>
-				Le deuxième champ texte <code>Prévisions officielles</code> permet au météorologue de rapporter la prévision officielle concernant à l’aéroport de Kuujjuaq.</p>
-			<h2 id="exportation">Exportation</h2>
-			<p>Il est possible d’enregistrer la page sous format PDF pour des fins de partage.<br>
-				Pour ce faire, il suffit d’appuyer sur <code>Ctrl + P</code>. Un dialogue d’impression apparaîtra comme cela:<br>
-				<img src="https://i.imgur.com/YTtZQ3H.png" alt="Impression"><br>
-				En sélectionnant l’option <code>Microsoft Print to PDF</code> ou <code>Enregistrer en tant que PDF</code>, la page au complet sera enregistrée en tant que PDF avec les commentaires et peut par la suite être consultée et envoyée par courriel facilement.
-			</p>
-			<p>Le graphique peut également être téléchargé en tant que <code>png</code> en sélectionnant l’icône de photo dans les options du graphique.<br>
-				<img src="https://i.imgur.com/FvAPwWf.png" alt="Télécharger en tant que PNG">
-			</p>
-			<h2 id="informations-techniques">Informations techniques</h2>
-			<h3 id="couches-utilisées">Couches utilisées</h3>
-			<ul>
-				<li>REPS.DIAG.6_PRMM.ERGE0.2 (Probs. ≥ 0.2mm , SRPE)</li>
-				<li>REPS.DIAG.6_PRMM.ERGE1 (Probs. ≥ 1.0mm, SRPE)</li>
-				<li>REPS.DIAG.6_PRMM.ERGE2.5 (Probs. ≥ 2.5mm, SRPE)</li>
-				<li>REPS.DIAG.6_PRMM.ERGE5 (Probs. ≥ 5.0mm, SRPE)</li>
-				<li>HRDPS.CONTINENTAL_TT (Température SHRPD)</li>
-				<li>HRDPS.CONTINENTAL_WD (Direction du vent SHRPD)</li>
-				<li>HRDPS.CONTINENTAL_WSPD (Vitesse du vent SHRPD)</li>
-			</ul>
-			<p>Il est possible de changer les couches utilisées sur demande.</p>
-			<h3 id="limitations">Notes</h3>
-			<p>Les données du <code>SRPE</code> sont rafraichies toutes les 6 heures (00, 06, 12, 18Z) et sont disponibles aux 6 heures jusqu'à 72 heures tandis que celles du <code>SHRPD</code> sont rafraichies toutes les 6 heures et sont disponibles aux heures jusqu'à 48 heures.
-			<h3 id="affichage-de-la-date">Affichage de la date</h3>
-			<p>Comme mentionné précédemment, l’affichage de la date suit la norme ISO8601 (AAAA-MM-JJ). Les heures sont ajustées en fonction de l’heure locale de <strong>l’utilisateur</strong> et non de l’aéroport. Donc, si le fuseau horaire de l’utilisateur ou du fureteur est différent du fuseau horaire de l’aéroport, alors les heures ne seront pas représentatives de la réalité à l’aéroport.</p>
-			<h3 id="conversion-de-la-direction-du-vent-en-cardinal">Conversion de la direction du vent en cardinal</h3>
-			<p>Lorsque la réponse de la requête de <code>HRDPS.CONTINENTAL_TT</code> est reçue, la valeur par défaut est un angle (360°).<br>
-				La conversion de l’angle (°) en cardinal N, S, E, W se fait comme suit:</p>
-			<pre class=" language-javascript"><code class="prism  language-javascript"><span class="token keyword">let</span>  val <span class="token operator">=</span> <span class="token function">Number</span><span class="token punctuation">(</span><span class="token punctuation">(</span>num<span class="token operator">/</span><span class="token number">22.5</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token punctuation">.</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">let</span>  arr<span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"N"</span><span class="token punctuation">,</span><span class="token string">"NNE"</span><span class="token punctuation">,</span><span class="token string">"NE"</span><span class="token punctuation">,</span><span class="token string">"ENE"</span><span class="token punctuation">,</span><span class="token string">"E"</span><span class="token punctuation">,</span><span class="token string">"ESE"</span><span class="token punctuation">,</span> <span class="token string">"SE"</span><span class="token punctuation">,</span> <span class="token string">"SSE"</span><span class="token punctuation">,</span><span class="token string">"S"</span><span class="token punctuation">,</span><span class="token string">"SSW"</span><span class="token punctuation">,</span><span class="token string">"SW"</span><span class="token punctuation">,</span><span class="token string">"WSW"</span><span class="token punctuation">,</span><span class="token string">"W"</span><span class="token punctuation">,</span><span class="token string">"WNW"</span><span class="token punctuation">,</span><span class="token string">"NW"</span><span class="token punctuation">,</span><span class="token string">"NNW"</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span class="token keyword">return</span>  arr<span class="token punctuation">[</span>Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span><span class="token punctuation">(</span>val <span class="token operator">%</span> <span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<p>La lecture des prévisions <code>B</code> à <code>14h00</code> représente les prévisions <code>B</code> entre <code>08h00</code> et <code>14h00</code>.<br>
+La lecture des prévisions <code>C</code> à <code>20h00</code> représente les prévisions <code>C</code> entre <code>14h00</code> et <code>20h00</code>.<br>
+La lecture des prévisions <code>A</code> à <code>08h00</code> représente les prévisions <code>A</code> entre <code>02h00</code> et <code>08h00</code>.<br>
+*Heure locale.</p>
+<h3 id="commentaires">Commentaires</h3>
+<p>La dernière section contient deux champs textes qui peuvent être utilisés pour commenter les données brutes plus haut. La section <code>Commentaires du météorologue</code> permet au météorologue d’ajouter des commentaires pertinents à l’égard des données.<br>
+Le deuxième champ texte <code>Prévisions officielles</code> permet au météorologue d’établir une ou des prévisions officielles concernant la météo à l’aéroport de Kuujjuaq.</p>
+<h2 id="exportation">Exportation</h2>
+<p>Il est possible d’enregistrer la page sous format PDF pour des fins de partage.<br>
+Pour ce faire, il suffit d’appuyer sur <code>Ctrl + P</code>. Un dialogue d’impression apparaîtra comme cela:<br>
+<img src="https://i.imgur.com/a0mz84f.png" alt="Impression"><br>
+En sélectionnant l’option <code>Microsoft Print to PDF</code> ou <code>Enregistrer en tant que PDF</code>, la page au complet sera enregistrée en tant que PDF avec les commentaires et peut par la suite être consulté et envoyé facilement.</p>
+<p>Le graphique peut également être téléchargé en tant que <code>png</code> en sélectionnant l’icône de photo dans les options du graphique.<br>
+<img src="https://i.imgur.com/urTDrJT.png" alt="Télécharger en tant que PNG"></p>
+<h2 id="informations-techniques">Informations techniques</h2>
+<h3 id="couches-utilisées">Couches utilisées</h3>
+<ul>
+<li>REPS.DIAG.6_PRMM.ERGE0.2 (Probs. ≥ 0.2mm)</li>
+<li>REPS.DIAG.6_PRMM.ERGE1 (Probs. ≥ 1.0mm)</li>
+<li>REPS.DIAG.6_PRMM.ERGE2.5 (Probs. ≥ 2.5mm)</li>
+<li>REPS.DIAG.6_PRMM.ERGE5 (Probs. ≥ 5.0mm)</li>
+<li>HRDPS.CONTINENTAL_TT (Température HRDPS)</li>
+<li>HRDPS.CONTINENTAL_WD (Direction du vent HRDPS)</li>
+<li>HRDPS.CONTINENTAL_WSPD (Vitesse du vent HRDPS)</li>
+</ul>
+<p>Pour changer les couches utilisées, vous pouvez communiquer avec <a href="mailto:ziad.lteif@ec.gc.ca">ziad.lteif@ec.gc.ca</a>.</p>
+<h3 id="limitations">Limitations</h3>
+<p>Les couches du <code>REPS</code> utilisent les passes suivantes: <code>00Z</code>, <code>06Z</code>, <code>12Z</code> et <code>18Z</code> (6h d’intervalle), tandis que les couches du <code>HRDPS</code> se mettent à jour à toutes les heures. De plus, les couches du <code>REPS</code> projettent jusqu’à 72h dans le futur contrairement au 48h limité par le <code>HRDPS</code>.<br>
+Dès lors, en considérant ces facteurs, la tableau affiche le résultat de toutes les passes du <code>REPS</code> et seulement les passes <code>00Z</code>, <code>06Z</code>,<code>12Z</code> et <code>18Z</code> pour le <code>HRDPS</code>.</p>
+<h3 id="affichage-de-la-date">Affichage de la date</h3>
+<p>Comme mentionné précédemment, l’affichage de la date suit la norme ISO8601 (AAAA-MM-JJ). Les heures sont ajustées en fonction de l’heure locale de <strong>l’utilisateur</strong> et non de l’aéroport. Donc, si le fuseau horaire de l’utilisateur ou du fureteur est différent du fuseau horaire de l’aéroport, alors les heures ne seront pas représentatives de la réalité à l’aéroport.</p>
+<h3 id="conversion-de-la-direction-du-vent-en-cardinal">Conversion de la direction du vent en cardinal</h3>
+<p>Lorsque la réponse de la requête de <code>HRDPS.CONTINENTAL_TT</code> revient, la valeur par défaut est un angle (360°).<br>
+La conversion de l’angle (°) en cardinal N, S, E, W se fait comme suit:</p>
+<pre class=" language-javascript"><code class="prism  language-javascript"><span class="token keyword">let</span>  val <span class="token operator">=</span> <span class="token function">Number</span><span class="token punctuation">(</span><span class="token punctuation">(</span>num <span class="token operator">/</span> <span class="token number">45</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span>  arr <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"N"</span><span class="token punctuation">,</span> <span class="token string">"NE"</span><span class="token punctuation">,</span> <span class="token string">"E"</span><span class="token punctuation">,</span> <span class="token string">"SE"</span><span class="token punctuation">,</span> <span class="token string">"S"</span><span class="token punctuation">,</span> <span class="token string">"SO"</span><span class="token punctuation">,</span> <span class="token string">"O"</span><span class="token punctuation">,</span> <span class="token string">"NO"</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span><span class="token punctuation">(</span>val <span class="token operator">%</span> <span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">8</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">return</span>  <span class="token string">"Variables"</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">return</span>  arr<span class="token punctuation">[</span>Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span><span class="token punctuation">(</span>val <span class="token operator">%</span> <span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
 </code></pre>
-			<p>Un tableau contient toutes les possibilités cardinales et le modulo 16 de l’angle divisé par 22.5 + 0.5 (arrondi) retourne un indice de tableau contenant la cardinalité de la direction du vent.<br>
-				Approximativement, la direction du vent varie tous les 22.5°.</p>
-			<h2 id="dépannage">Dépannage</h2>
-			<table>
-				<thead>
-					<tr>
-						<th>Problème</th>
-						<th>Description du problème</th>
-						<th>Cause possible</th>
-						<th>Solution</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>#1</td>
-						<td>La page est blanche et rien ne s’affiche autre que les commentaires du météorologue et les prévisions officielles. (<strong>Aucune animation de chargement</strong>)</td>
-						<td>Javascript est désactivé ou un fureteur incompatible est utilisé</td>
-						<td>Assurez-vous d’avoir Javascript activé dans votre fureteur. Vous pouvez consulter <a href="https://www.enable-javascript.com/">https://www.enable-javascript.com/</a> pour les étapes à suivre pour votre fureteur. Assurez-vous d’utiliser un fureteur compatible avec l’application en vous référant à la section “Compatiblité”.</td>
-					</tr>
-					<tr>
-						<td>#2</td>
-						<td>La page charge indéfiniment (Plus de 2m30s)</td>
-						<td>Une erreur est survenue lors de la lecture de la réponse suite à une requête.</td>
-						<td>Rafraîchissez la page. Si le chargement continue indéfiniment, ouvrez la console de votre fureteur (<a href="https://balsamiq.com/support/faqs/browserconsole/">https://balsamiq.com/support/faqs/browserconsole/</a>). Sur Google Chrome: <code>Ctrl + Shift + J</code>. Si une erreur de type <code>Uncaught (in promise) SyntaxError: Unexpected token &lt; in JSON at position 0</code> est soulevée, attendez 3-5 minutes et réessayez. Si l’erreur persiste, essayez un autre fureteur. Dans l’eventualité où l’erreur persiste, assurez-vous que votre pare-feu ne bloque pas la requête vers <code>https://geo.weather.gc.ca</code>. Déconnectez-vous d’un VPN (s’il y a lieu) et rééssayer. Si la déconnexion du VPN est impossible, vider la cache dans votre fureteur (<a href="https://www.pcmag.com/how-to/how-to-clear-your-cache-on-any-browser">https://www.pcmag.com/how-to/how-to-clear-your-cache-on-any-browser</a>), redémarrez votre ordinateur et rééssayez à nouveau.</td>
-					</tr>
-					<tr>
-						<td>#3</td>
-						<td>Le tableau affiche des valeurs <code>%undefined%</code> ou <code>%NaN%</code></td>
-						<td>Un problème de connexion empêche l’envoi de toutes les requêtes adéquatement.</td>
-						<td>Assurez-vous d’avoir une connexion Internet stable et que votre pare-feu ne bloque pas les requêtes vers <code>https://geo.weather.gc.ca</code>. Attendez quelques minutes et rafraîchissez la page.</td>
-					</tr>
-				</tbody>
-			</table>
-			<h2 id="licence">Licence</h2>
-			<p>Le code source de l’application utilise la licence MIT. Voici les détails de celle-ci:</p>
-			<pre class=" language-license"><code class="prism  language-license">MIT License
-        Copyright (c) 2021 Ziad Lteif
-        Permission is hereby granted, free of charge, to any person obtaining a copy
-        of this software and associated documentation files (the "Software"), to deal
-        in the Software without restriction, including without limitation the rights
-        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-        copies of the Software, and to permit persons to whom the Software is
-        furnished to do so, subject to the following conditions:
-        The above copyright notice and this permission notice shall be included in all
-        copies or substantial portions of the Software.
-        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-        SOFTWARE.
+<p>Un tableau contient toutes les possibilités cardinales et le modulo 16 de l’angle divisé par 22.5 + 0.5 (arrondi) retourne un indice de tableau contenant la cardinalité de la direction du vent.<br>
+Approximativement, la direction du vent varie tous les 22.5°.</p>
+<h2 id="dépannage">Dépannage</h2>
+
+<table>
+<thead>
+<tr>
+<th>Problème</th>
+<th>Description du problème</th>
+<th>Cause possible</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>#1</td>
+<td>La page est blanche et rien ne s’affiche autre que les commentaires du météorologue et les prévisions officielles. (<strong>Aucune animation de chargement</strong>)</td>
+<td>Javascript est désactivé ou un fureteur incompatible est utilisé</td>
+<td>Assurez-vous d’avoir Javascript activé dans votre fureteur. Vous pouvez consulter <a href="https://www.enable-javascript.com/">https://www.enable-javascript.com/</a> pour les étapes à suivre pour votre fureteur.<br> Assurez-vous d’utiliser un fureteur compatible avec l’application en vous référant à la section “Compatiblité”.</td>
+</tr>
+<tr>
+<td>#2</td>
+<td>La page charge indéfiniment (Plus de 2m30s)</td>
+<td>Une erreur est survenue lors de la lecture de la réponse suite à une requête.</td>
+<td>Rafraîchissez la page. Si le chargement continue indéfiniment, ouvrez la console de votre fureteur (<a href="https://balsamiq.com/support/faqs/browserconsole/">https://balsamiq.com/support/faqs/browserconsole/</a>). Sur Google Chrome: <code>Ctrl + Shift + J</code>. <br><br> Si une erreur de type <code>Uncaught (in promise) SyntaxError: Unexpected token &lt; in JSON at position 0</code> est soulevée, attendez 3-5 minutes et réessayer. <br><br> Si l’erreur persiste, essayez un autre fureteur. Dans l’eventualité où l’erreur persiste, assurez-vous que votre pare-feu ne bloque pas la requête vers <code>https://geo.weather.gc.ca</code>. Déconnectez-vous d’un VPN (s’il y a lieu) et rééssayer. <br> <br> Si la déconnexion du VPN est impossible, vider le cache dans votre fureteur (<a href="https://www.pcmag.com/how-to/how-to-clear-your-cache-on-any-browser">https://www.pcmag.com/how-to/how-to-clear-your-cache-on-any-browser</a>), redémarrez votre ordinateur et rééssayer de nouveau. <br> <br>Si une erreur de type <code>JavaScript: Error undefined JavaScript execution exceeded timeout</code> apparaît dans la console, suivez les étapes ci-dessus pour assurer une connexion fiable vers <code>https://geo.weather.gc.ca</code>. <br>Si l’erreur persiste, attendez une vingtaine de minutes et réessayer. Il est possible que les serveurs <code>geo.weather.gc.ca</code> soient débordés.</td>
+</tr>
+<tr>
+<td>#3</td>
+<td>Le tableau affiche des valeurs <code>%undefined%</code> ou <code>%NaN%</code></td>
+<td>Un problème de connexion empêche l’envoi de toutes les requêtes adéquatement.</td>
+<td>Assurez-vous d’avoir une connexion Internet stable et que votre pare-feu ne bloque pas les requêtes vers <code>https://geo.weather.gc.ca</code>. Attendez quelques minutes et rafraîchissez la page.</td>
+</tr>
+<tr>
+<td>#4</td>
+<td>La page ne s’affiche pas correction lors de l’impression en PDF.</td>
+<td>Un paramètre du fureteur peut obstruer l’affichage de la page correctement.</td>
+<td>Désactiver toutes les extensions du fureteur (Adblock, etc.), vérifiez que la version de votre navigateur est compatible avec l’application et essayer un autre navigateur. <br><br>Si la page ne s’affiche toujours pas correctement lors de l’impression <code>Ctrl + P</code>, vous pouvez utiliser <code>Snipping tool</code> sur Windows afin de capturer l’écran.</td>
+</tr>
+</tbody>
+</table><h2 id="licence">Licence</h2>
+<p>Le code source de l’application utilise la licence MIT. Voici les détails de celle-ci:</p>
+<pre class=" language-license"><code class="prism  language-license">MIT License
+
+Copyright (c) [2021] [Ziad Lteif]
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 </code></pre>
-		</div>
-	</div>
+
+    </div>
+  </div>
 </body>
 
 </html>
