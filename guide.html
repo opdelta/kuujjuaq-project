@@ -48,19 +48,19 @@ Table goes here</p>
 <li><code>guide.html</code> - Ce document.</li>
 </ul>
 <h3 id="décompression-des-fichiers">Décompression des fichiers</h3>
-<p>Pour décompresser les fichiers: <code>clic droit &gt; 7zip &gt; Extraire</code> ou ouvrir le fichier <code>.7z</code> et copier/coller les fichiers vers un répertoire.<br>
-Veuillez prendre note que tous les fichiers doivent se situer dans le même répertoire sans quoi l’application ne pourra fonctionner.</p>
-<h2 id="lancement-de-lapplication">Lancement de l’application</h2>
-<p>En utilisant un fureteur compatible avec l’application web (Voir <a href="#compatibility">ici</a>), lancez le fichier <code>index.html</code>.</p>
-<p>Lors du lancement initial de l’application, plusieurs requêtes seront faites à <code>Geomet</code> pour aller chercher les dernières prévisions météorologiques. Dès lors, le temps d’attente initial peut varier entre <code>5s et 75s</code>.<br>
-Le temps d’attente dépend de plusieurs facteurs dont:</p>
-<ul>
-<li>La vitesse du réseau</li>
-<li>La bande passante disponible</li>
-<li>La charge de travail sur les serveurs de Geomet</li>
-<li>Le temps de la journée au moment de la requête</li>
-<li>Etc.</li>
-</ul>
+			<p>Pour décompresser les fichiers: <code>clic droit &gt; 7zip &gt; Extraire</code> ou ouvrir le fichier <code>.7z</code> et copier/coller les fichiers vers un répertoire.<br>
+				Veuillez prendre note que tous les fichiers doivent se situer dans le même répertoire sans quoi l’application ne pourra fonctionner.</p>
+			<h2 id="lancement-de-lapplication">Lancement de l’application</h2>
+			<p>En utilisant un fureteur compatible avec l’application web (Voir <a href="#compatibility">ici</a>), lancez le fichier <code>index.html</code>.</p>
+			<p>Lors du lancement initial de l’application, plusieurs requêtes seront faites à l'API <code>GeoMet du SMC</code> pour aller chercher les prévisions météorologiques de la dernière passe disponibles. Dès lors, le temps d’attente initial peut varier entre <code>5s et 75s</code>.<br>
+				Le temps d’attente dépend de plusieurs facteurs dont:</p>
+			<ul>
+				<li>La vitesse du réseau</li>
+				<li>La bande passante disponible</li>
+				<li>La charge de travail sur les serveurs de GeoMet du SMC</li>
+				<li>Le temps de la journée au moment de la requête</li>
+				<li>Etc.</li>
+			</ul>
 <p>Une fois le chargement de la page terminé, la page ressemblera à ceci:<br>
 <img src="https://i.imgur.com/IjvAPQF.png" alt="Previsions Kuujjuaq"><br>
 ** L’exemple ci-dessus n’est pas représentatif des vraies prévisions à la date indiquée.</p>
@@ -118,14 +118,11 @@ En sélectionnant l’option <code>Microsoft Print to PDF</code> ou <code>Enregi
 <li>REPS.DIAG.6_PRMM.ERGE1 (Probs. ≥ 1.0mm)</li>
 <li>REPS.DIAG.6_PRMM.ERGE2.5 (Probs. ≥ 2.5mm)</li>
 <li>REPS.DIAG.6_PRMM.ERGE5 (Probs. ≥ 5.0mm)</li>
-<li>HRDPS.CONTINENTAL_TT (Température HRDPS)</li>
-<li>HRDPS.CONTINENTAL_WD (Direction du vent HRDPS)</li>
-<li>HRDPS.CONTINENTAL_WSPD (Vitesse du vent HRDPS)</li>
+<li>RDPS.ETA_TT (Température)</li>
+<li>RDPS.ETA_WD (Direction du vent)</li>
+<li>RDPS.ETA_WSPD (Vitesse du vent)</li>
 </ul>
-<p>Pour changer les couches utilisées, vous pouvez communiquer avec <a href="mailto:ziad.lteif@ec.gc.ca">ziad.lteif@ec.gc.ca</a>.</p>
-<h3 id="limitations">Limitations</h3>
-<p>Les couches du <code>REPS</code> utilisent les passes suivantes: <code>00Z</code>, <code>06Z</code>, <code>12Z</code> et <code>18Z</code> (6h d’intervalle), tandis que les couches du <code>HRDPS</code> se mettent à jour à toutes les heures. De plus, les couches du <code>REPS</code> projettent jusqu’à 72h dans le futur contrairement au 48h limité par le <code>HRDPS</code>.<br>
-Dès lors, en considérant ces facteurs, la tableau affiche le résultat de toutes les passes du <code>REPS</code> et seulement les passes <code>00Z</code>, <code>06Z</code>,<code>12Z</code> et <code>18Z</code> pour le <code>HRDPS</code>.</p>
+<p>Les couches de <code>SRPE</code> (Système régional de prévision d’ensemble) et du <code>SRPD</code> (Système régional de prévision déterministe) sont disponibles toutes les 3 heures 4 fois par jour aux heures synoptiques <code>00, 06, 12 et 18Z</code>.</p>
 <h3 id="affichage-de-la-date">Affichage de la date</h3>
 <p>Comme mentionné précédemment, l’affichage de la date suit la norme ISO8601 (AAAA-MM-JJ). Les heures sont ajustées en fonction de l’heure locale de <strong>l’utilisateur</strong> et non de l’aéroport. Donc, si le fuseau horaire de l’utilisateur ou du fureteur est différent du fuseau horaire de l’aéroport, alors les heures ne seront pas représentatives de la réalité à l’aéroport.</p>
 <h3 id="conversion-de-la-direction-du-vent-en-cardinal">Conversion de la direction du vent en cardinal</h3>
@@ -181,7 +178,7 @@ Approximativement, la direction du vent varie tous les 22.5°.</p>
 <p>Le code source de l’application utilise la licence MIT. Voici les détails de celle-ci:</p>
 <pre class=" language-license"><code class="prism  language-license">MIT License
 
-Copyright (c) [2021] [Ziad Lteif]
+Copyright (c) 2021 Ziad Lteif
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

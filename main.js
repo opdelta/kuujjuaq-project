@@ -26,9 +26,9 @@ const layer02 = 'REPS.DIAG.6_PRMM.ERGE0.2'; //Regional precipitation >= 0.2mm
 const layer1 = 'REPS.DIAG.6_PRMM.ERGE1'; //Regional precipitation >= 1mm
 const layer25 = 'REPS.DIAG.6_PRMM.ERGE2.5'; //Regional precipitation >= 2.5mm
 const layer5 = 'REPS.DIAG.6_PRMM.ERGE5'; //Regional precipitation >= 5mm
-const layerTemp = 'HRDPS.CONTINENTAL_TT'; //Regional mean average temperature
-const layerWindDir = 'HRDPS.CONTINENTAL_WD'; //Wind direction
-const layerWindSp = 'HRDPS.CONTINENTAL_WSPD'; //Wind speed
+const layerTemp = 'RDPS.ETA_TT'; //Regional mean average temperature
+const layerWindDir = 'RDPS.ETA_WD'; //Wind direction
+const layerWindSp = 'RDPS.ETA_WSPD'; //Wind speed
 const nightly = 'https://geomet-dev-03-nightly.cmc.ec.gc.ca/geomet?service=WMS&version='; //Nightly build
 const regular = 'https://geo.weather.gc.ca/geomet?service=WMS&version='; //Regular build
 const regularCapab = 'https://geo.weather.gc.ca/geomet/?lang=en&service=WMS&version=1.3.0&request=GetCapabilities&layers=';
@@ -37,6 +37,7 @@ let utc = -4; //Timezone
 let [version, request, info_format] = ['1.3.0', 'GetFeatureInfo', 'application/json']; //Version, request and format for the information
 let [minx, miny, maxx, maxy] = [coordX - 0.25, coordY - 0.25, coordX + 0.25, coordY + 0.25]; //bbox around CYVP airport
 let progress = 0;
+const colorArray = ["low0","low1","low2","low3","medium1","medium2","medium3","high1","high2","high3","high4"];
 /**
  * Initializes an array containing all the required information to send the requests to Geomet.
  * Timesteps for the time= parameter is also considered and calculated.
@@ -45,7 +46,6 @@ let progress = 0;
  */
 function prepareRequests(headers, server) {
   const interval = headers[3];
-  //console.log("interval = " + interval); //Debugging purposes
   let timesteps = [];
   timesteps.push(headers[4].toISOString().replace('.000', '')); //Remove trailing zeroes for compatibility with time= parameter
   let increment = headers[4];
@@ -69,20 +69,20 @@ function prepareRequests(headers, server) {
     version + '&request=' + request + '&layers=' + layer5 + '&crs=EPSG:4326&bbox=' +
     minx + ',' + miny + ',' + maxx + ',' + maxy + '&exceptions=xml&width=10&height=10&INFO_FORMAT=' +
     info_format + '&query_layers=' + layer5 + '&x=1&y=1';
-  let url6 = server +
+  let urlTemp = server +
     version + '&request=' + request + '&layers=' + layerTemp + '&crs=EPSG:4326&bbox=' +
     minx + ',' + miny + ',' + maxx + ',' + maxy + '&exceptions=xml&width=10&height=10&INFO_FORMAT=' +
     info_format + '&query_layers=' + layerTemp + '&x=1&y=1';
-  let url7 = server +
+  let urlWd = server +
     version + '&request=' + request + '&layers=' + layerWindDir + '&crs=EPSG:4326&bbox=' +
     minx + ',' + miny + ',' + maxx + ',' + maxy + '&exceptions=xml&width=10&height=10&INFO_FORMAT=' +
     info_format + '&query_layers=' + layerWindDir + '&x=1&y=1';
-  let url8 = server +
+  let urlWspd = server +
     version + '&request=' + request + '&layers=' + layerWindSp + '&crs=EPSG:4326&bbox=' +
     minx + ',' + miny + ',' + maxx + ',' + maxy + '&exceptions=xml&width=10&height=10&INFO_FORMAT=' +
     info_format + '&query_layers=' + layerWindSp + '&x=1&y=1';
   let info = [];
-  info.push(timesteps, url02, url1, url25, url5, url6, url7, url8);
+  info.push(timesteps, url02, url1, url25, url5, urlTemp, urlWd, urlWspd);
   return info;
 }
 /**
@@ -97,53 +97,35 @@ async function sendRequests(headers, nb) {
   let responses = [];
   let datesMod = [];
   let url = headers[nb].concat("&time=" + headers[0][0]);
-  if (nb >= 5) {
-    for (let k = 0; k < headers[0].length - 4; ++k) {
-      datesMod.push(headers[0][k]);
-    }
-    //console.log(datesMod); Debugging
-    for (let i = 0; i < datesMod.length; ++i) {
-      try {
-        if (i != 0) {
-          url = url.replace(/[^=]*$/.exec(url), datesMod[i]);
-        }
-        //console.log(url);
-        let response = await fetch(url);
-        //console.log(response);
-        let data = await response.json();
-        responses.push(data.features[0].properties.value);
-        progress = progress + 1.53;
-        if (progress >= 100) {
-          progress = 100;
-        }
-        if (document.getElementById("loading-progress")) {
-          document.getElementById("loading-progress").innerHTML = Math.round(progress) + '%';
-        }
-      } catch (e) {
-        console.log("Time out of bounds detected. Skipping request(s)...");
-      }
-      
-    }
-  } else {
-    for (let j = 0; j < headers[0].length; ++j) {
-      if (j != 0) {
-        url = url.replace(/[^=]*$/.exec(url), headers[0][j]);
+  for (let k = 0; k < headers[0].length; ++k) {
+    datesMod.push(headers[0][k]);
+  }
+  for (let i = 0; i < datesMod.length; ++i) {
+    try {
+      if (i != 0) {
+        url = url.replace(/[^=]*$/.exec(url), datesMod[i]);
       }
       let response = await fetch(url);
       let data = await response.json();
       responses.push(data.features[0].properties.value);
-      progress = progress + 1.53;
+      progress = progress + 1.2;
       if (progress >= 100) {
         progress = 100;
       }
       if (document.getElementById("loading-progress")) {
         document.getElementById("loading-progress").innerHTML = Math.round(progress) + '%';
       }
+    } catch (e) {
+      console.log("Exception detected with request. Skipping request(s)...");
     }
   }
   return responses;
 }
-
+/**
+ * Function that finds the cardinality of an angle. (5 degrees becomes North).
+ * @param {Number} num Integer to be transformed into cardinal
+ * @return {String} Cardinality of the angle number provided in parameters.
+ */
 function degToCompass(num) {
   let val = Number((num / 45));
   let arr = ["N", "NE", "E", "SE", "S", "SO", "O", "NO"];
@@ -176,7 +158,6 @@ function tracePlot(xaxis, yaxis) {
     date[i] = xaxis[i].toLocaleString('fr-CA');
     date[i] = date[i].substring(0, date[i].indexOf('m'));
     date[i] = date[i].replace(' h ', 'h');
-    //console.log(date[i]); Debugging
   }
   date.push(lastDate);
   for (let j = 0; j < yaxis[4].length; ++j) {
@@ -201,7 +182,6 @@ function tracePlot(xaxis, yaxis) {
       shape: 'hv'
     },
     fill: 'tozeroy',
-
   };
   var trace2 = {
     x: date,
@@ -214,7 +194,6 @@ function tracePlot(xaxis, yaxis) {
       shape: 'hv'
     },
     fill: 'tozeroy',
-
   }
   var trace3 = {
     x: date,
@@ -227,7 +206,6 @@ function tracePlot(xaxis, yaxis) {
       shape: 'hv'
     },
     fill: 'tozeroy',
-
   }
   var trace4 = {
     x: date,
@@ -240,7 +218,6 @@ function tracePlot(xaxis, yaxis) {
       shape: 'hv'
     },
     fill: 'tozeroy',
-
   }
   var layout = {
     title: 'Probabilités de précipitations',
@@ -262,6 +239,7 @@ function tracePlot(xaxis, yaxis) {
     },
     yaxis: {
       title: 'Probabilités (%)',
+      range: [0, 100]
     }
   };
   
@@ -313,142 +291,27 @@ function createTable(date, data) {
     cell3.innerHTML = data[1][i] + " %";
     cell4.innerHTML = data[2][i] + " %";
     cell5.innerHTML = data[3][i] + " %";
+    /*
+     * Array lookup to correlate value with color scheme
+     */
     for (let j = 0; j < 4; ++j) {
-      if (data[j][i] >= 5 && data[j][i] <= 10) {
-        switch (j) {
-          case 0:
-            cell2.setAttribute("id", "low1");
-            break;
-          case 1:
-            cell3.setAttribute("id", "low1");
-            break;
-          case 2:
-            cell4.setAttribute("id", "low1");
-            break;
-          case 3:
-            cell5.setAttribute("id", "low1");
-            break;
-        }
-      } else if (data[j][i] > 10 && data[j][i] <= 20) {
-        switch (j) {
-          case 0:
-            cell2.setAttribute("id", "low2");
-            break;
-          case 1:
-            cell3.setAttribute("id", "low2");
-            break;
-          case 2:
-            cell4.setAttribute("id", "low2");
-            break;
-          case 3:
-            cell5.setAttribute("id", "low2");
-            break;
-        }
-      } else if (data[j][i] > 20 && data[j][i] <= 40) {
-        switch (j) {
-          case 0:
-            cell2.setAttribute("id", "low3");
-            break;
-          case 1:
-            cell3.setAttribute("id", "low3");
-            break;
-          case 2:
-            cell4.setAttribute("id", "low3");
-            break;
-          case 3:
-            cell5.setAttribute("id", "low3");
-            break;
-        }
-      } else if (data[j][i] > 40 && data[j][i] <= 50) {
-        switch (j) {
-          case 0:
-            cell2.setAttribute("id", "medium1");
-            break;
-          case 1:
-            cell3.setAttribute("id", "medium1");
-            break;
-          case 2:
-            cell4.setAttribute("id", "medium1");
-            break;
-          case 3:
-            cell5.setAttribute("id", "medium1");
-            break;
-        }
-      } else if (data[j][i] > 50 && data[j][i] <= 60) {
-        switch (j) {
-          case 0:
-            cell2.setAttribute("id", "medium1");
-            break;
-          case 1:
-            cell3.setAttribute("id", "medium2");
-            break;
-          case 2:
-            cell4.setAttribute("id", "medium2");
-            break;
-          case 3:
-            cell5.setAttribute("id", "medium2");
-            break;
-        }
-      } else if (data[j][i] > 60 && data[j][i] < 70) {
-        switch (j) {
-          case 0:
-            cell2.setAttribute("id", "medium1");
-            break;
-          case 1:
-            cell3.setAttribute("id", "medium2");
-            break;
-          case 2:
-            cell4.setAttribute("id", "medium3");
-            break;
-          case 3:
-            cell5.setAttribute("id", "medium4");
-            break;
-        }
-      } else if (data[j][i] >= 70 && data[j][i] <= 80) {
-        switch (j) {
-          case 0:
-            cell2.setAttribute("id", "high1");
-            break;
-          case 1:
-            cell3.setAttribute("id", "high1");
-            break;
-          case 2:
-            cell4.setAttribute("id", "high1");
-            break;
-          case 3:
-            cell5.setAttribute("id", "high1");
-            break;
-        }
-      } else if (data[j][i] > 80 && data[j][i] <= 90) {
-        switch (j) {
-          case 0:
-            cell2.setAttribute("id", "high2");
-            break;
-          case 1:
-            cell3.setAttribute("id", "high2");
-            break;
-          case 2:
-            cell4.setAttribute("id", "high2");
-            break;
-          case 3:
-            cell5.setAttribute("id", "high2");
-            break;
-        }
-      } else if (data[j][i] > 90 && data[j][i] <= 100) {
-        switch (j) {
-          case 0:
-            cell2.setAttribute("id", "high3");
-            break;
-          case 1:
-            cell3.setAttribute("id", "high3");
-            break;
-          case 2:
-            cell4.setAttribute("id", "high3");
-            break;
-          case 3:
-            cell5.setAttribute("id", "high3");
-            break;
-        }
+      switch(j) {
+        case 0:
+          let val = data[0][i] / 10;
+          cell2.classList.add(colorArray[Math.round(val % 11)]);
+          break;
+        case 1:
+          let val1 = data[1][i] / 10;
+          cell3.classList.add(colorArray[Math.round(val1 % 11)]);
+          break;
+        case 2:
+          let val2 = data[2][i] / 10;
+          cell4.classList.add(colorArray[Math.round(val2 % 11)]);
+          break;
+        case 3:
+          let val3 = data[3][i] / 10;
+          cell5.classList.add(colorArray[Math.round(val3 % 11)]);
+          break;
       }
     }
   }
@@ -467,7 +330,6 @@ function adjustUTC(time) {
   }
   return adjustedDate;
 }
-
 /**
  * Parses Geomet service's GetCapabilities to retrieve time values.
  * Once time values are retrieved, requests are prepared and sent using
@@ -476,15 +338,21 @@ function adjustUTC(time) {
  * Finally, the graphs and tables are generated.
  */
 console.log("Task started.");
+document.querySelector("#version").innerHTML = "Version 3.1.1"
 var parser = new ol.format.WMSCapabilities();
-fetch(regularCapab + layer02)
-  .then(function(response) {
+fetch(regularCapab + layer02).catch(function(e) {
+  if (document.querySelector("body > div.container > div.row.loading")) {
+    document.querySelector("body > div.container > div.row.loading").remove();
+  }
+  if (document.querySelector("body > div > p")) {
+    document.querySelector("body > div > p").id = "fatal-exception";
+    document.querySelector("body > div > p").innerHTML = "Une exception s'est produite. Vérifiez si vous êtes bel et bien connecté au VPN.";
+  }
+}).then(function(response) {
     return response.text();
-  })
-  .then(function(text) {
+  }).then(function(text) {
     let result = parser.read(text);
     console.log("GetCapabilities successfully retrieved.");
-    //console.log(result); //Debugging purposes
     let startTime = result.Capability.Layer.Layer[0].Layer[0].Layer[0].Layer[0].Dimension[0].default; //Retrieve start time dimensions.
     let values = result.Capability.Layer.Layer[0].Layer[0].Layer[0].Layer[0].Dimension[0].values; //Retrieve start time, end time and interval
     let endTime = values.substring(
@@ -500,11 +368,9 @@ fetch(regularCapab + layer02)
     headers = prepareRequests(headers, regular); //Prepare requests
     console.log("Requests successfully created.");
     let [begin, end] = [startTime.split('T')[0], endTime.split('T')[0]]; //For HTML title dates
-    //console.log(headers); //Debugging purposes
     document.getElementById("title").innerHTML = "Pr&eacute;visions Kuujjuaq (CYVP) du " + begin + " au " + end;
     let adjustedUTC = adjustUTC(headers[0]);
     let promises = [];
-    //console.log(adjustedUTC); //Debugging purposes
     for (let i = 1; i < headers.length; ++i) {
       promises.push(sendRequests(headers, i));
     }
@@ -527,9 +393,11 @@ fetch(regularCapab + layer02)
         if (document.querySelector("body > div > p")) {
           document.querySelector("body > div > p").remove();
         }
+        if (document.querySelector("#production-date")) {
+          document.querySelector("#production-date").innerHTML = "Bulletin produit par le Service Météorologique du Canada le " + begin + ' à 12h00 HAE.';
+        }
         console.log("Task done.");
       }).catch(err => {
         console.log(err);
         console.error('Une erreur s\'est produite. Veuillez réessayer dans quelques minutes. Si l\'erreur persiste, veuillez contacter Ziad.lteif@ec.gc.ca')});
   })
-
